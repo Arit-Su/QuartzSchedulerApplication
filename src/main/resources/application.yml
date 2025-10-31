@@ -1,0 +1,41 @@
+spring:
+  # H2 Database Configuration
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:file:./data/quartz-scheduler-db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password # Using a simple, non-empty password for clarity
+
+  # JPA (Hibernate) Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # Quartz Scheduler Configuration
+  quartz:
+    # This is the most important section for the fix
+    job-store-type: jdbc
+    jdbc:
+      # This property tells Spring Boot to run the schema creation scripts
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyQuartzScheduler
+            instanceId: AUTO
+          jobStore:
+            # The StdJDBCDelegate will be used by default and will auto-detect H2.
+            useProperties: true
+            misfireThreshold: 60000
+            isClustered: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
