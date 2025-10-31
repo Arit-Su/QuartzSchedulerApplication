@@ -6,24 +6,36 @@ A robust Spring Boot REST application that schedules jobs using Quartz Scheduler
 Prerequisites
 -------------
 
-*   Java 17 or higher
-    
-*   Apache Maven
-    
+-   Java 17 or higher
+
+    -   Apache Maven
 
 How to Run
 ----------
 
-1.  Clone the repository.
-    
-2.  Navigate to the project's root directory.
-    
-3.  mvn clean install
-    
-4.  java -jar target/quartz-scheduler-app-0.0.1-SNAPSHOT.jar
-    
+-   Clone the repository.
+
+    -   Navigate to the project's root directory.
+
+    -   Clean and build the project using Maven:
+
+
+
+    ```
+    mvn clean install
+    ```
+
+    -   Run the application:
+
+
+
+    ```
+    java -jar target/quartz-scheduler-app-0.0.1-SNAPSHOT.jar
+    ```
 
 The application will be running on http://localhost:8080. A local H2 database file will be created in the /data directory.
+
+* * * * *
 
 API Endpoint
 ------------
@@ -32,32 +44,68 @@ API Endpoint
 
 Schedules a new job to print a message at a specified time in the future.
 
-*   **URL**: /api/v1/schedule/job
-    
-*   **Method**: POST
-    
-*   **Content-Type**: application/json
-    
+-   **URL**: /api/v1/schedule/job
+
+    -   **Method**: POST
+
+    -   **Content-Type**: application/json
 
 #### Example Request (Successful)
 
 The scheduledTime must be a future date and time.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {      "name": "ABC",      "username": "architect2",      "message": "Welcome to NHK",      "scheduledTime": "2025-12-02T10:30:00"  }   `
+
+
+```
+{
+    "name": "ABC",
+    "username": "architect2",
+    "message": "Welcome to NHK",
+    "scheduledTime": "2025-12-02T10:30:00"
+}
+```
 
 #### Success Response (202 Accepted)
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {      "success": true,      "message": "Job scheduled successfully!"  }   `
+
+```
+{
+    "success": true,
+    "message": "Job scheduled successfully!"
+}
+```
+
+* * * * *
 
 #### Example Request (Validation Error)
 
 Providing a scheduledTime that is in the past will result in a validation error.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {      "name": "ABC",      "username": "architect2",      "message": "Welcome to NHK",      "scheduledTime": "2024-12-02T10:30:00"  }   `
+
+
+```
+{
+    "name": "ABC",
+    "username": "architect2",
+    "message": "Welcome to NHK",
+    "scheduledTime": "2024-12-02T10:30:00"
+}
+```
 
 #### Error Response (400 Bad Request)
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {      "success": false,      "errors": {          "scheduledTime": "Scheduled time must be in the future."      }  }   `
+
+
+```
+{
+    "success": false,
+    "errors": {
+        "scheduledTime": "Scheduled time must be in the future."
+    }
+}
+```
+
+* * * * *
 
 Database
 --------
@@ -70,6 +118,10 @@ You can query the Quartz tables to see the details of the jobs that have been sc
 
 **Example Query:**
 
-This query retrieves all persisted job details from the primary Quartz table. The actual job data (name, message, etc.) is stored in a serialized format in the JOB\_DATA column.
+This query retrieves all persisted job details from the primary Quartz table. The actual job data (name, message, etc.) is stored in a serialized format in the JOB_DATA column.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   select * from QRTZ_JOB_DETAILS;   `
+
+
+```
+select * from QRTZ_JOB_DETAILS;
+```
